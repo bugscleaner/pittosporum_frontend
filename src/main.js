@@ -4,7 +4,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Button, Select } from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en'
-import Router from './router'
+import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
@@ -16,6 +16,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(main),
-  Router,
-  template: '<App/>'
+  router,
+  template: '<App/>',
 }).$mount('#app')
