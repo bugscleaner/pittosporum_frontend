@@ -31,7 +31,7 @@ service.interceptors.response.use(
         alert(res.hasError)
         if (res.hasError == true) {
             if (res.code == 'B0008') {
-                router.replace({name:'login'})
+                /*router.replace({name:'login'})*/
             }else{
                 return Promise.reject(response);
             }
@@ -61,6 +61,19 @@ import qs from "qs"
 export function post(url, params) {
     return new Promise((resolve, reject) => {
             service.post(url, JSON.stringify(params))
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                reject(err.data)
+            })
+    });
+}
+
+
+export function get(url, params) {
+    return new Promise((resolve, reject) => {
+        service.get(url, params)
             .then(res => {
                 resolve(res.data);
             })
