@@ -28,10 +28,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data
-        alert(res.hasError)
         if (res.hasError == true) {
             if (res.code == 'B0008') {
-                /*router.replace({name:'login'})*/
+                router.replace({name:'login'})
             }else{
                 return Promise.reject(response);
             }
