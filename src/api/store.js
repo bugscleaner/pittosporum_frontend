@@ -1,8 +1,8 @@
-import {get} from "../utils/request"
+import {get, post} from "../utils/request"
 
 
-export function receiveStoreData() {
-    return get("/store/all")
+export function receiveStoreData(queryParam) {
+    return post("/store/all", queryParam)
 }
 
 export function runSqlById(id) {
@@ -11,4 +11,16 @@ export function runSqlById(id) {
 
 export function receiveDataBaseProfile() {
     return get("/store/profile-list");
+}
+
+export function createStore({profileId, executeSql}){
+    return post("/store", {
+        profileId, executeSql
+    })
+}
+
+export function createStoreList({profileId, executeSql}){
+    return post("/store/list", {
+        profileId, executeSql
+    })
 }

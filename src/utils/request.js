@@ -48,8 +48,11 @@ service.interceptors.response.use(
                 case 404:
                     // router.replace({name:'not404'})
                     break;
+                case 500:
+                    console.log("Internal Server Error")
+                    break;
                 default:
-                    alert(error.response.data.message)
+
             }
             return Promise.reject(error.response);
         }
@@ -59,6 +62,7 @@ service.interceptors.response.use(
 import qs from "qs"
 export function post(url, params) {
     return new Promise((resolve, reject) => {
+            console.log(JSON.stringify(params))
             service.post(url, JSON.stringify(params))
             .then(res => {
                 resolve(res.data);

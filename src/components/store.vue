@@ -6,7 +6,7 @@
             :default-sort = "{prop: 'date', order: 'descending'}">
             :row-class-name="tableRowClassName">
             <el-table-column
-                    prop="id"
+                    type="index"
                     label="No"
                     sortable
                     width="180">
@@ -68,7 +68,9 @@
                 　　　　:before-close="handleClose"
                 :close-on-click-modal="false">
 
+            <span ref="error_msg" style="color: #ff0000"></span>
 
+            <br><br>
             <el-select v-model="options.id" placeholder="select profile">
                 <el-option
                         v-for="item in options"
@@ -92,11 +94,19 @@
       </span>
         </el-dialog>
 
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pageNo"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="this.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="this.totalCount">
+        </el-pagination>
+
         <el-button-group>
-            <el-button type="primary" icon="el-icon-arrow-left">Prev</el-button>
             <el-button type="primary" @click="createSqlForm()">Create</el-button>
-            <el-button type="primary">Bulk Create</el-button>
-            <el-button type="primary">Next<i class="el-icon-arrow-right el-icon--right"></i></el-button>
         </el-button-group>
 
     </div>
@@ -105,7 +115,7 @@
 
 
 <script>
-import {receiveStoreData, runSqlById, receiveDataBaseProfile} from "../api/store";
+import {receiveStoreData, runSqlById, receiveDataBaseProfile, createStore, createStoreList} from "../api/store";
 export default {
     name: 'data-store',
     created(){
@@ -117,18 +127,27 @@ export default {
             queryList : null,
             dialogVisible: false,
             textarea2: '',
-
             options: [{
                 id: '',
                 profileName: ''
-            }]
+            }],
+
+            totalCount: null,
+
+            pageNo: 1,
+            pageSize: 10,
         }
     },
 
     methods:{
         receiveData (){
-            receiveStoreData().then(res => {
-                this.queryList = res;
+            let searchParam = {
+                "pageNo": this.pageNo,
+                "pageSize": this.pageSize
+            }
+            receiveStoreData(searchParam).then(res => {
+                this.queryList = res.result
+                this.totalCount = res.rowCount;
             }).catch(() => {
             });
         },
@@ -144,8 +163,16 @@ export default {
 
         open2() {
             this.$message({
-                message: 'execute success',
+                message: 'Success',
                 type: 'success'
+            });
+        },
+
+        open4() {
+            this.$message({
+                showClose: true,
+                message: 'There was a mistake',
+                type: 'error'
             });
         },
 
@@ -160,10 +187,18 @@ export default {
 
         createRecord(){
             let profileId = this.options.id;
-
-            if (profileId == undefined || profileId == ''){
-                alert("create sql error");
-            }
+            let executeSql = this.textarea2
+            createStore({
+                profileId: profileId,
+                executeSql: executeSql
+            }).then(res => {
+                this.open2();
+                this.closeShadow();
+            }).catch(rej => {
+                this.open4();
+                let errorMsg = rej.message;
+                this.$refs.error_msg.innerHTML = errorMsg;
+            })
         },
 
         closeShadow(){
@@ -176,9 +211,17 @@ export default {
                     done();
                 })
                 .catch(_ => {});
+        },
+
+        handleSizeChange(val) {
+            console.log(` ${val} item`);
+        },
+
+        handleCurrentChange(val) {
+            console.log(`current page: ${val}`);
+            this.pageNo = val;
+            this.receiveData()
         }
-
-
 
     }
 }
