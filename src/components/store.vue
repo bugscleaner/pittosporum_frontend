@@ -20,30 +20,35 @@
             <el-table-column
                     prop="executeSql"
                     label="Execute SQL"
+                    sortable
                     >
             </el-table-column>
 
             <el-table-column
                     prop="executeResult"
                     label="Execute Result"
+                    sortable
                     >
             </el-table-column>
 
             <el-table-column
                     prop="runCount"
                     label="Execute Count"
+                    sortable
                     >
             </el-table-column>
 
             <el-table-column
                     prop="createBy"
                     label="Create By"
+                    sortable
                     >
             </el-table-column>
 
             <el-table-column
                     prop="createDt"
                     label="Create Time"
+                    sortable
                     >
             </el-table-column>
 
@@ -133,7 +138,6 @@ export default {
             }],
 
             totalCount: null,
-
             pageNo: 1,
             pageSize: 10,
         }
@@ -194,6 +198,7 @@ export default {
             }).then(res => {
                 this.open2();
                 this.closeShadow();
+                this.$router.go(0);
             }).catch(rej => {
                 this.open4();
                 let errorMsg = rej.message;
@@ -215,6 +220,8 @@ export default {
 
         handleSizeChange(val) {
             console.log(` ${val} item`);
+            this.pageSize = val;
+            this.receiveData()
         },
 
         handleCurrentChange(val) {

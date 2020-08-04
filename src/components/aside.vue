@@ -11,7 +11,7 @@
             <el-submenu index="2">
                 <template slot="title"><i class="el-icon-s-goods" tabindex="1"></i>Job Configuration</template>
                 <el-menu-item-group>
-                    <el-menu-item index="" ><router-link to="/mgr/profile">Job Management</router-link></el-menu-item>
+                    <el-menu-item index="" ><router-link to="/mgr/job">Job Management</router-link></el-menu-item>
                     <el-menu-item index="" ><router-link to="/mgr/store">Trigger Log</router-link></el-menu-item>
                 </el-menu-item-group>
             </el-submenu>

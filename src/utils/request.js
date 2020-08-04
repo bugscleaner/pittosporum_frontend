@@ -73,7 +73,6 @@ export function post(url, params) {
     });
 }
 
-
 export function get(url, params) {
     return new Promise((resolve, reject) => {
         service.get(url, params)
