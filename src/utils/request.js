@@ -62,8 +62,19 @@ service.interceptors.response.use(
 import qs from "qs"
 export function post(url, params) {
     return new Promise((resolve, reject) => {
-            console.log(JSON.stringify(params))
             service.post(url, JSON.stringify(params))
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                reject(err.data)
+            })
+    });
+}
+
+export function put(url, params) {
+    return new Promise((resolve, reject) => {
+        service.put(url, JSON.stringify(params))
             .then(res => {
                 resolve(res.data);
             })

@@ -1,4 +1,4 @@
-import {get, post} from "../utils/request"
+import {get, post, put} from "../utils/request"
 
 
 export function receiveStoreData(queryParam) {
@@ -17,6 +17,14 @@ export function createStore({profileId, executeSql}){
     return post("/store", {
         profileId, executeSql
     })
+}
+
+export function updateStore(entity){
+    return put("/store", entity)
+}
+
+export function deleteStoreById(entity){
+    return put("/store/delete", entity)
 }
 
 export function createStoreList({profileId, executeSql}){
